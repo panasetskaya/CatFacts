@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailActivity"
+    android:orientation="vertical"
+    android:layout_margin="8dp"
+    android:weightSum="100">
+
+
+     <TextView
+         android:id="@+id/textViewCatFactDetail"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:textSize="25sp"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="100">
+
+        <ImageView
+            android:id="@+id/imageViewCatPic"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:visibility="visible"/>
+
+    </FrameLayout>
+
+
+
+    <Button
+        android:id="@+id/buttonToFavourites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="@string/add_to_favourites"
+        android:backgroundTint="@android:color/holo_orange_dark"
+        android:onClick="onClickChangeFavourite"/>
+</LinearLayout>
