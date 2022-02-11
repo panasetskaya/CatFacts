@@ -15,7 +15,8 @@
          android:id="@+id/textViewCatFactDetail"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-         android:textSize="25sp"/>
+         android:textSize="25sp"
+         android:layout_marginBottom="8dp"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -28,6 +29,7 @@
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/cat_image_description"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <ProgressBar
@@ -45,6 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="48dp"
+        android:layout_marginTop="8dp"
         android:text="@string/add_to_favourites"
         android:backgroundTint="@android:color/holo_orange_dark"
         android:onClick="onClickChangeFavourite"/>

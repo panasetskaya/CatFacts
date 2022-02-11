@@ -2,6 +2,7 @@ package com.example.catfacts
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.catfacts.adapters.CatFactAdapter
 import com.example.catfacts.data.MainViewModel
+import com.example.catfacts.pojo.CatFact
 
 const val ARG_OBJECT = "object"
 
@@ -39,6 +41,16 @@ class SliderFragment : Fragment() {
                 viewModel.catFactsList?.observe(requireActivity(), Observer {
                     adapter.clear()
                     adapter.catFactList = ArrayList(it)
+                    Log.i("MyRes", " adapter.catFactList = ArrayList(it) сработал")
+                })
+            } else if (tabPosition==1) {
+                viewModel.favFactList?.observe(requireActivity(), Observer {
+                    Log.i("MyRes", "viewModel.favFactList?.observe сработал")
+                    adapter.clear()
+                    for (i in it) {
+                        adapter.catFactList.add(CatFact(i.FactId,i.text))
+                        adapter.notifyDataSetChanged()
+                    }
                 })
             }
             adapter.onfactClick = {

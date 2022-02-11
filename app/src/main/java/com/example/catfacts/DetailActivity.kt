@@ -2,15 +2,17 @@ package com.example.catfacts
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import com.example.catfacts.api.ApiFactory
+import com.example.catfacts.data.MainViewModel
 import com.example.catfacts.pojo.CatFact
+import com.example.catfacts.pojo.FavouriteFact
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -25,15 +27,18 @@ class DetailActivity : AppCompatActivity() {
     private var disposable: io.reactivex.rxjava3.disposables.Disposable? = null
     private var picUrl: String? = null
     private var progressBar: ProgressBar? = null
-    private var isFavourite = false
+    private var isFavourite: Boolean? = false
+    private lateinit var viewModel: MainViewModel
+    private lateinit var text: String
+    private lateinit var id:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         progressBar = findViewById(R.id.progressBar)
         textViewFact = findViewById(R.id.textViewCatFactDetail)
         buttonToFavourite = findViewById(R.id.buttonToFavourites)
-        checkIfFavourite()
         catPic = findViewById(R.id.imageViewCatPic)
         disposable = ApiFactory.apiServicePic.getPicUrl()
             .subscribeOn(Schedulers.io())
@@ -56,10 +61,16 @@ class DetailActivity : AppCompatActivity() {
             })
         val intent = intent;
         if (intent!=null && intent.hasExtra("text")) {
-            val text = intent.getStringExtra("text")
-            val id:String = intent.getStringExtra("id").toString()
+            text = intent.getStringExtra("text").toString()
+            id = intent.getStringExtra("id").toString()
             textViewFact?.text = text
             catFact = CatFact(id,text)
+        }
+        isFavourite = viewModel.isFavById(id)
+        if (isFavourite!!) {
+            buttonToFavourite?.setText(getString(R.string.delete_from_favourites))
+        } else {
+            buttonToFavourite?.setText(getString(R.string.add_to_favourites))
         }
     }
 
@@ -70,15 +81,13 @@ class DetailActivity : AppCompatActivity() {
     }
 
     fun onClickChangeFavourite(view: View) {
-        checkIfFavourite()
-    }
-
-    fun checkIfFavourite() {
-        if (!isFavourite) {
-            buttonToFavourite?.setText(getString(R.string.add_to_favourites))
+        if (!isFavourite!!) {
+            viewModel.addToFavourite(FavouriteFact(id, text))
+            buttonToFavourite?.setText(getString(R.string.delete_from_favourites))
             isFavourite = true
         } else {
-            buttonToFavourite?.setText(getString(R.string.delete_from_favourites))
+            viewModel.deleteFromFavourites(FavouriteFact(id, text))
+            buttonToFavourite?.setText(getString(R.string.add_to_favourites))
             isFavourite = false
         }
     }

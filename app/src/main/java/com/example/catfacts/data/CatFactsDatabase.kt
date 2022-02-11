@@ -5,8 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.catfacts.pojo.CatFact
+import com.example.catfacts.pojo.FavouriteFact
 
-@Database(entities = [CatFact::class], version = 8, exportSchema = false)
+@Database(entities = [CatFact::class, FavouriteFact::class], version = 11, exportSchema = false)
 abstract class CatFactsDatabase: RoomDatabase() {
     companion object {
         private val LOCK = Any()
@@ -16,7 +17,10 @@ abstract class CatFactsDatabase: RoomDatabase() {
         fun getInstance(context: Context): CatFactsDatabase? {
             synchronized(LOCK) {
                 if (database==null) {
-                    val instance = Room.databaseBuilder(context, CatFactsDatabase::class.java, DB_NAME).build()
+                    val instance = Room.databaseBuilder(context, CatFactsDatabase::class.java, DB_NAME)
+                        .fallbackToDestructiveMigration()
+                        .allowMainThreadQueries()
+                        .build()
                     database = instance
                     return instance
                 } else {
