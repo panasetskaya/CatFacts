@@ -40,22 +40,21 @@ class DetailActivity : AppCompatActivity() {
         textViewFact = findViewById(R.id.textViewCatFactDetail)
         buttonToFavourite = findViewById(R.id.buttonToFavourites)
         catPic = findViewById(R.id.imageViewCatPic)
+        catPic?.setImageResource(R.drawable.koshka)
         disposable = ApiFactory.apiServicePic.getPicUrl()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 picUrl = it.toString()
-                Picasso.get().load(picUrl).into(catPic, object: Callback {
+                Picasso.get().load(picUrl).placeholder(R.drawable.koshka).into(catPic, object: Callback {
                     override fun onSuccess() {
                         Log.i("MyRes", "Test of PICasso loading succesful")
-                        progressBar?.visibility = View.INVISIBLE
+                        progressBar?.visibility = View.GONE
                     }
-
                     override fun onError(e: Exception?) {
-                        Log.i("MyRes", "Picasso loading UNsuccesful!")
+                        Log.i("MyRes", "Picasso loading Unsuccesful!")
                     }
                 } )
-                progressBar?.visibility = View.INVISIBLE
             }, {
                 Log.i("MyRes", "PicUrl loading UNsuccessful! "+it.message)
             })

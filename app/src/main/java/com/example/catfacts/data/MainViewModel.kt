@@ -40,8 +40,6 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     fun addToFavourite(favouriteFact: FavouriteFact) {
         Observable.fromCallable {
             db?.catFactDao()?.insertFavouriteFact(favouriteFact)
-            Log.i("myRes", "Success: inserting favfact")
-
         }
             ?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
@@ -49,7 +47,12 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     }
 
     fun deleteFromFavourites(favouriteFact: FavouriteFact) {
-        db?.catFactDao()?.deleteFavouriteFact(favouriteFact)
+        Observable.fromCallable {
+            db?.catFactDao()?.deleteFavouriteFact(favouriteFact)
+        }
+            ?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe { Log.i("myRes", "Success: deleting favfact") }
     }
 
     fun isFavById(id: String): Boolean? {

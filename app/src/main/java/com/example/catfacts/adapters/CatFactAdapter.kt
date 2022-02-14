@@ -26,14 +26,12 @@ class CatFactAdapter: RecyclerView.Adapter<CatFactAdapter.CatFactHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatFactHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.catfact_item, parent, false)
-        Log.i("MyRes", "onCreateViewHolder сработал")
         return CatFactHolder(view)
     }
 
     override fun onBindViewHolder(holder: CatFactHolder, position: Int) {
         val catFact = catFactList[position]
         holder.textViewCatfact.text = catFact.text
-        Log.i("MyRes", "onBindViewHolder сработал")
     }
 
     override fun getItemCount() = catFactList.size

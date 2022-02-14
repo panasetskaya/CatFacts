@@ -41,11 +41,9 @@ class SliderFragment : Fragment() {
                 viewModel.catFactsList?.observe(requireActivity(), Observer {
                     adapter.clear()
                     adapter.catFactList = ArrayList(it)
-                    Log.i("MyRes", " adapter.catFactList = ArrayList(it) сработал")
                 })
             } else if (tabPosition==1) {
                 viewModel.favFactList?.observe(requireActivity(), Observer {
-                    Log.i("MyRes", "viewModel.favFactList?.observe сработал")
                     adapter.clear()
                     for (i in it) {
                         adapter.catFactList.add(CatFact(i.FactId,i.text))
